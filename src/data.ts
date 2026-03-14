@@ -1,0 +1,93 @@
+export const polymers = [
+  {
+    id: 'pebd',
+    acronym: 'PEBD',
+    name: 'Polietileno de Baixa Densidade',
+    rawMaterial: 'Etileno (gás derivado do petróleo).',
+    process: 'Polimerização por adição sob alta pressão e temperatura. As moléculas de etileno se unem formando longas cadeias ramificadas.',
+    applications: 'Sacolas de supermercado, filmes para embalagens, plástico bolha.',
+    damages: 'Demora centenas de anos para se decompor, fragmenta-se em microplásticos e causa asfixia de animais marinhos.',
+    products: 'Sacolas, embalagens flexíveis, lonas agrícolas.',
+    curiosity: 'É um dos plásticos mais produzidos no mundo devido ao seu baixo custo e grande flexibilidade.',
+    color: 'from-blue-400 to-blue-600',
+    number: 4
+  },
+  {
+    id: 'pead',
+    acronym: 'PEAD',
+    name: 'Polietileno de Alta Densidade',
+    rawMaterial: 'Etileno (gás derivado do petróleo).',
+    process: 'Polimerização por adição sob baixa pressão, usando catalisadores especiais. Forma cadeias mais retas (lineares), o que o torna mais rígido.',
+    applications: 'Frascos de detergente, tampas, potes, tubulação de água.',
+    damages: 'Acúmulo em aterros sanitários e oceanos, gerando poluição visual e física a longo prazo.',
+    products: 'Embalagens de shampoo, potes de sorvete, engradados, bombonas.',
+    curiosity: 'É mais rígido e resistente que o PEBD porque suas cadeias poliméricas se "empacotam" melhor, aumentando a densidade.',
+    color: 'from-cyan-400 to-cyan-600',
+    number: 2
+  },
+  {
+    id: 'pvc',
+    acronym: 'PVC',
+    name: 'Policloreto de Vinila',
+    rawMaterial: 'Cloreto de vinila (derivado de petróleo e sal marinho).',
+    process: 'Polimerização por adição. O monômero cloreto de vinila se repete formando o polímero.',
+    applications: 'Tubos e conexões (encanamento), fios e cabos, couro sintético, esquadrias.',
+    damages: 'Sua queima libera dioxinas (gases altamente tóxicos e cancerígenos). É de difícil reciclagem em comparação a outros plásticos.',
+    products: 'Canos de água, cartões de crédito, discos de vinil, mangueiras.',
+    curiosity: 'É o único plástico em larga escala que não é 100% derivado do petróleo (contém cerca de 57% de cloro extraído do sal marinho).',
+    color: 'from-teal-400 to-teal-600',
+    number: 3
+  },
+  {
+    id: 'pet',
+    acronym: 'PET',
+    name: 'Polietileno Tereftalato',
+    rawMaterial: 'Ácido tereftálico e etilenoglicol (derivados do petróleo).',
+    process: 'Polimerização por condensação. Os monômeros reagem liberando uma molécula menor (geralmente água) para formar o poliéster.',
+    applications: 'Garrafas de refrigerante e água, fibras têxteis (roupas de poliéster).',
+    damages: 'Gera um volume gigantesco de lixo urbano. Quando degradado, forma microplásticos que entram na cadeia alimentar.',
+    products: 'Garrafas, roupas de ginástica, vassouras ecológicas, embalagens de bolo.',
+    curiosity: 'É um dos plásticos mais reciclados no Brasil e no mundo, podendo ser transformado em tecido para roupas.',
+    color: 'from-emerald-400 to-emerald-600',
+    number: 1
+  },
+  {
+    id: 'pp',
+    acronym: 'PP',
+    name: 'Polipropileno',
+    rawMaterial: 'Propileno (gás derivado do petróleo).',
+    process: 'Polimerização por adição. Semelhante ao polietileno, mas usando o monômero propileno.',
+    applications: 'Potes de margarina, seringas, para-choques de carros, cadeiras de plástico.',
+    damages: 'Acúmulo no meio ambiente e geração de microplásticos. Demora muito para se degradar naturalmente.',
+    products: 'Tupperware, utilidades domésticas, autopeças, carpetes.',
+    curiosity: 'Pode ser dobrado milhões de vezes sem quebrar, por isso é muito usado em dobradiças de potes (tampas "flip-top").',
+    color: 'from-green-400 to-green-600',
+    number: 5
+  },
+  {
+    id: 'ps',
+    acronym: 'PS',
+    name: 'Poliestireno',
+    rawMaterial: 'Estireno (derivado do petróleo).',
+    process: 'Polimerização por adição do estireno. Pode ser expandido com gases para formar o isopor.',
+    applications: 'Copos descartáveis, isopor (PS expandido), talheres de plástico.',
+    damages: 'O isopor ocupa muito volume nos aterros e fragmenta-se facilmente, sendo frequentemente ingerido por aves e peixes.',
+    products: 'Bandejas de carne, copos de café, embalagens protetoras para eletrônicos.',
+    curiosity: '"Isopor" é na verdade uma marca registrada; o nome correto do material é Poliestireno Expandido (EPS), que é composto por 98% de ar!',
+    color: 'from-indigo-400 to-indigo-600',
+    number: 6
+  },
+  {
+    id: 'pu',
+    acronym: 'PU',
+    name: 'Poliuretano',
+    rawMaterial: 'Diisocianatos e polióis.',
+    process: 'Polimerização por condensação/adição (formação de ligações uretânicas entre os monômeros).',
+    applications: 'Espumas de colchão, esponjas de lavar louça, solados de sapato, isolamento térmico.',
+    damages: 'A queima libera gases extremamente tóxicos (como cianeto de hidrogênio). Sua reciclagem é complexa e pouco viável economicamente em larga escala.',
+    products: 'Colchões, pranchas de surfe, assentos de carros, selantes.',
+    curiosity: 'Foi amplamente utilizado na Segunda Guerra Mundial como um substituto resistente e leve para a borracha.',
+    color: 'from-violet-400 to-violet-600',
+    number: 7
+  }
+];
