@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'motion/react';
 import { 
   FlaskConical, 
   Recycle, 
@@ -21,7 +21,12 @@ import {
   Hourglass,
   Waves,
   Microscope,
-  Fish
+  Fish,
+  Search,
+  Trophy,
+  XCircle,
+  ChevronRight,
+  Award
 } from 'lucide-react';
 import { polymers } from './data';
 
@@ -39,6 +44,7 @@ function App() {
         <PolymersSection />
         <ImpactSection />
         <RecyclingSection />
+        <QuizSection />
       </main>
       <Footer />
     </div>
@@ -323,21 +329,49 @@ function PresentationModal({ onClose }: { onClose: () => void }) {
 }
 
 function PolymersSection() {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredPolymers = polymers.filter(p => 
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    p.acronym.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.applications.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.products.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <section id="tipos" className="py-24 bg-white">
+    <section id="tipos" className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Os 7 Principais Polímeros</h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto mb-8">
             Conheça os plásticos mais comuns do nosso dia a dia, como são feitos e onde são aplicados.
           </p>
+
+          <div className="max-w-md mx-auto relative group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-emerald-500 transition-colors">
+              <Search className="h-5 w-5" />
+            </div>
+            <input
+              type="text"
+              placeholder="Ex: garrafa, isopor, PVC..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
+            />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {polymers.map((polymer) => (
-            <PolymerCard key={polymer.id} polymer={polymer} />
-          ))}
-        </div>
+        {filteredPolymers.length === 0 ? (
+          <div className="text-center py-12 text-slate-500">
+            Nenhum polímero encontrado com o termo "{searchTerm}".
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPolymers.map((polymer) => (
+              <PolymerCard key={polymer.id} polymer={polymer} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
@@ -346,6 +380,16 @@ function PolymersSection() {
 function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
   const [isOpen, setIsOpen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOpen = (e: any) => {
+      if (e.detail === polymer.id) {
+        setIsOpen(true);
+      }
+    };
+    window.addEventListener('openPolymer', handleOpen);
+    return () => window.removeEventListener('openPolymer', handleOpen);
+  }, [polymer.id]);
 
   const { scrollYProgress } = useScroll({
     target: cardRef,
@@ -358,6 +402,7 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
   return (
     <motion.div 
       ref={cardRef}
+      id={`polymer-${polymer.id}`}
       layout
       whileHover={{ scale: 1.02 }}
       className={`relative bg-white rounded-3xl shadow-lg shadow-slate-200/40 overflow-hidden transition-shadow duration-300 hover:shadow-2xl hover:shadow-slate-300/60 ${isOpen ? 'col-span-1 md:col-span-2 lg:col-span-3' : ''}`}
@@ -382,16 +427,17 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/10 transition-opacity duration-300 group-hover:opacity-90" />
         
-        <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+        <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col sm:flex-row items-end justify-between gap-4">
           <div className="flex items-center gap-4">
             <motion.div 
               animate={{ 
                 scale: isOpen ? 1.05 : 1,
               }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${polymer.color} flex items-center justify-center text-white font-extrabold text-2xl shadow-lg ring-2 ring-white/20`}
+              className={`w-16 h-16 min-w-[4rem] flex-shrink-0 rounded-2xl bg-gradient-to-br ${polymer.color} flex items-center justify-center text-white font-extrabold text-2xl shadow-lg ring-2 ring-white/20`}
+              translate="no"
             >
-              {polymer.acronym}
+              <span className="translate-no">{polymer.acronym}</span>
             </motion.div>
             <div>
               <h3 className="text-xl md:text-2xl font-bold text-white mb-1 drop-shadow-md group-hover:text-emerald-300 transition-colors">{polymer.name}</h3>
@@ -455,6 +501,28 @@ function InfoBlock({ icon, title, content, className = "bg-slate-50" }: { icon: 
   );
 }
 
+function AnimatedCounter({ from, to, suffix = "" }: { from: number, to: number, suffix?: string }) {
+  const [count, setCount] = useState(from);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (inView) {
+      let startTime: number;
+      const duration = 2000;
+      const animate = (time: number) => {
+        if (!startTime) startTime = time;
+        const progress = Math.min((time - startTime) / duration, 1);
+        setCount(Math.floor(progress * (to - from) + from));
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    }
+  }, [inView, from, to]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
 function ImpactSection() {
   const particles = React.useMemo(() => {
     return Array.from({ length: 15 }).map(() => ({
@@ -514,7 +582,7 @@ function ImpactSection() {
             </div>
             
             <p className="text-slate-300 leading-relaxed relative z-10">
-              Plásticos podem levar de <strong>100 a mais de 400 anos</strong> para se decompor na natureza. Uma garrafa PET que você usa por 10 minutos pode sobreviver a várias gerações.
+              Plásticos podem levar de <strong><AnimatedCounter from={0} to={100} /> a mais de <AnimatedCounter from={0} to={400} /> anos</strong> para se decompor na natureza. Uma garrafa PET que você usa por 10 minutos pode sobreviver a várias gerações.
             </p>
             
             {/* Visual Aid: Timeline/Progress */}
@@ -708,16 +776,24 @@ function RecyclingSection() {
           
           <div className="w-full md:w-1/2 grid grid-cols-3 gap-4">
             {[
-              { num: 1, name: 'PET', fullName: 'Polietileno Tereftalato' },
-              { num: 2, name: 'PEAD', fullName: 'Polietileno de Alta Densidade' },
-              { num: 3, name: 'PVC', fullName: 'Policloreto de Vinila' },
-              { num: 4, name: 'PEBD', fullName: 'Polietileno de Baixa Densidade' },
-              { num: 5, name: 'PP', fullName: 'Polipropileno' },
-              { num: 6, name: 'PS', fullName: 'Poliestireno' },
-              { num: 7, name: 'OUTROS', fullName: 'Outros (PU, ABS, PC, etc.)' },
+              { num: 1, name: 'PET', fullName: 'Polietileno Tereftalato', id: 'pet' },
+              { num: 2, name: 'PEAD', fullName: 'Polietileno de Alta Densidade', id: 'pead' },
+              { num: 3, name: 'PVC', fullName: 'Policloreto de Vinila', id: 'pvc' },
+              { num: 4, name: 'PEBD', fullName: 'Polietileno de Baixa Densidade', id: 'pebd' },
+              { num: 5, name: 'PP', fullName: 'Polipropileno', id: 'pp' },
+              { num: 6, name: 'PS', fullName: 'Poliestireno', id: 'ps' },
+              { num: 7, name: 'OUTROS', fullName: 'Outros (PU, ABS, PC, etc.)', id: 'pu' },
             ].map((item) => (
-              <div key={item.num} className="group relative bg-white aspect-square rounded-2xl shadow-md shadow-emerald-100/50 flex flex-col items-center justify-center p-4 hover:shadow-lg hover:shadow-emerald-200/50 transition-shadow">
-                <Recycle className="w-10 h-10 text-emerald-600 mb-2" strokeWidth={1.5} />
+              <div 
+                key={item.num} 
+                className="group relative bg-white aspect-square rounded-2xl shadow-md shadow-emerald-100/50 flex flex-col items-center justify-center p-4 hover:shadow-lg hover:shadow-emerald-200/50 transition-all cursor-pointer hover:scale-105"
+                onClick={() => {
+                  if (item.num === 7) return; // 'OUTROS' uses PU here but maybe better to not force open
+                  document.getElementById(`polymer-${item.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  window.dispatchEvent(new CustomEvent('openPolymer', { detail: item.id }));
+                }}
+              >
+                <Recycle className="w-10 h-10 text-emerald-600 mb-2 transition-transform group-hover:rotate-12" strokeWidth={1.5} />
                 <span className="text-2xl font-black text-slate-800 leading-none">{item.num}</span>
                 <span className="text-xs font-bold text-slate-500 mt-1">{item.name}</span>
                 
@@ -731,6 +807,145 @@ function RecyclingSection() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function QuizSection() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showScore, setShowScore] = useState(false);
+  const [score, setScore] = useState(0);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+
+  const questions = [
+    {
+      questionText: 'Qual plástico compõe o Isopor (EPS)?',
+      answerOptions: [
+        { answerText: 'PEAD', isCorrect: false },
+        { answerText: 'PS (Poliestireno)', isCorrect: true },
+        { answerText: 'PVC', isCorrect: false },
+        { answerText: 'PP', isCorrect: false },
+      ],
+    },
+    {
+      questionText: 'Qual desses materiais vira um grande gerador de dioxinas extremamente tóxicas quando queimado?',
+      answerOptions: [
+        { answerText: 'PVC (Policloreto de Vinila)', isCorrect: true },
+        { answerText: 'PET', isCorrect: false },
+        { answerText: 'PEBD', isCorrect: false },
+      ],
+    },
+    {
+      questionText: 'É o plástico mais usado em garrafas de refrigerante e água, altamente reciclável:',
+      answerOptions: [
+        { answerText: 'PP', isCorrect: false },
+        { answerText: 'PU', isCorrect: false },
+        { answerText: 'PET (Polietileno Tereftalato)', isCorrect: true },
+      ],
+    },
+  ];
+
+  const handleAnswerOptionClick = (isCorrect: boolean, index: number) => {
+    setSelectedOption(index);
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+
+    setTimeout(() => {
+      setSelectedOption(null);
+      const nextQuestion = currentQuestion + 1;
+      if (nextQuestion < questions.length) {
+        setCurrentQuestion(nextQuestion);
+      } else {
+        setShowScore(true);
+      }
+    }, 1200);
+  };
+
+  const resetQuiz = () => {
+    setCurrentQuestion(0);
+    setScore(0);
+    setShowScore(false);
+    setSelectedOption(null);
+  };
+
+  return (
+    <section className="py-24 bg-slate-900 border-t border-slate-800">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }} className="inline-block">
+            <Lightbulb className="w-12 h-12 text-yellow-500 mx-auto mb-4 drop-shadow-[0_0_15px_rgba(234,179,8,0.5)]" />
+          </motion.div>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Quiz do Conhecimento</h2>
+          <p className="text-lg text-slate-400">Teste o que você aprendeu com este material!</p>
+        </div>
+
+        <div className="bg-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative overflow-hidden ring-1 ring-white/10">
+          {showScore ? (
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center py-8">
+              <Trophy className={`w-20 h-20 mx-auto mb-6 ${score === questions.length ? 'text-yellow-400' : 'text-emerald-400'}`} />
+              <h3 className="text-3xl font-bold text-white mb-4">
+                Você acertou {score} de {questions.length}!
+              </h3>
+              <p className="text-slate-300 mb-8">
+                {score === questions.length 
+                  ? "Parabéns! Você arrasou, tá expert em Química!" 
+                  : "Muito bem! O importante é aprender e conscientizar."}
+              </p>
+              <button 
+                onClick={resetQuiz}
+                className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-colors"
+              >
+                Tentar Novamente
+              </button>
+            </motion.div>
+          ) : (
+            <motion.div key={currentQuestion} initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -20, opacity: 0 }}>
+              <div className="mb-8">
+                <div className="flex justify-between items-center text-sm font-bold text-slate-400 mb-4 tracking-widest uppercase">
+                  <span>Pergunta {currentQuestion + 1}/{questions.length}</span>
+                  <div className="flex gap-1">
+                    {questions.map((_, i) => (
+                      <div key={i} className={`h-2 w-8 rounded-full ${i <= currentQuestion ? 'bg-emerald-500' : 'bg-slate-700'}`} />
+                    ))}
+                  </div>
+                </div>
+                <h3 className="text-2xl font-bold text-white leading-relaxed">
+                  {questions[currentQuestion].questionText}
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {questions[currentQuestion].answerOptions.map((answerOption, index) => {
+                  let buttonClass = 'bg-slate-700/50 hover:bg-slate-600 border-slate-600';
+                  if (selectedOption !== null) {
+                    if (index === selectedOption) {
+                      buttonClass = answerOption.isCorrect ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-red-500/20 border-red-500 text-red-400';
+                    } else if (answerOption.isCorrect && selectedOption !== null) {
+                      buttonClass = 'bg-emerald-500/20 border-emerald-500 text-emerald-400 opacity-50';
+                    } else {
+                      buttonClass = 'bg-slate-800/50 border-slate-700 opacity-50 pointer-events-none';
+                    }
+                  }
+
+                  return (
+                    <button
+                      key={index}
+                      disabled={selectedOption !== null}
+                      onClick={() => handleAnswerOptionClick(answerOption.isCorrect, index)}
+                      className={`w-full text-left p-4 rounded-xl border-2 font-medium text-slate-200 transition-all flex items-center justify-between ${buttonClass}`}
+                    >
+                      {answerOption.answerText}
+                      {selectedOption !== null && index === selectedOption && (
+                        answerOption.isCorrect ? <CheckCircle2 className="w-6 h-6 text-emerald-500" /> : <XCircle className="w-6 h-6 text-red-500" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>
