@@ -491,23 +491,33 @@ function InfoBlock({ icon, title, content, className = "bg-slate-50" }: { icon: 
 function AnimatedCounter({ from, to, suffix = "" }: { from: number, to: number, suffix?: string }) {
   const [count, setCount] = useState(from);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
+  const inView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
     if (inView) {
-      let startTime: number;
       const duration = 2000;
-      const animate = (time: number) => {
-        if (!startTime) startTime = time;
-        const progress = Math.min((time - startTime) / duration, 1);
-        setCount(Math.floor(progress * (to - from) + from));
-        if (progress < 1) requestAnimationFrame(animate);
-      };
-      requestAnimationFrame(animate);
+      const frameRate = 1000 / 60; // 60fps
+      const totalFrames = Math.round(duration / frameRate);
+      let frame = 0;
+      
+      const timer = setInterval(() => {
+        frame++;
+        const progress = frame / totalFrames;
+        const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+        
+        if (frame >= totalFrames) {
+          setCount(to);
+          clearInterval(timer);
+        } else {
+          setCount(Math.floor(from + (to - from) * easeOutQuad));
+        }
+      }, frameRate);
+      
+      return () => clearInterval(timer);
     }
   }, [inView, from, to]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return <span ref={ref} className="tabular-nums font-bold inline-block">{count}{suffix}</span>;
 }
 
 function ImpactSection() {
