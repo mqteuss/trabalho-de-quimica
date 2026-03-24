@@ -842,6 +842,30 @@ function QuizSection() {
         { answerText: 'PET (Polietileno Tereftalato)', isCorrect: true },
       ],
     },
+    {
+      questionText: 'Plástico altamente flexível escolhido para fazer sacolas de supermercado e plástico bolha:',
+      answerOptions: [
+        { answerText: 'PEBD (Polietileno de Baixa Densidade)', isCorrect: true },
+        { answerText: 'PEAD (Polietileno de Alta Densidade)', isCorrect: false },
+        { answerText: 'PS (Poliestireno)', isCorrect: false },
+      ],
+    },
+    {
+      questionText: 'Qual destes plásticos aguenta ser dobrado milhões de vezes sem quebrar as dobradiças?',
+      answerOptions: [
+        { answerText: 'PVC', isCorrect: false },
+        { answerText: 'PET', isCorrect: false },
+        { answerText: 'PP (Polipropileno)', isCorrect: true },
+      ],
+    },
+    {
+      questionText: 'Substituiu a borracha na 2ª Guerra Mundial e hoje é um estofado de excelência no qual dormimos:',
+      answerOptions: [
+        { answerText: 'PEAD', isCorrect: false },
+        { answerText: 'PU (Poliuretano)', isCorrect: true },
+        { answerText: 'PS', isCorrect: false },
+      ],
+    },
   ];
 
   const handleAnswerOptionClick = (isCorrect: boolean, index: number) => {
