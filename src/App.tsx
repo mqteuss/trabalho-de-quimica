@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'motion/react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { 
   FlaskConical, 
   Recycle, 
@@ -391,29 +391,16 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
     return () => window.removeEventListener('openPolymer', handleOpen);
   }, [polymer.id]);
 
-  const { scrollYProgress } = useScroll({
-    target: cardRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Efeito de paralaxe sutil para o fundo do card
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-
   return (
-    <motion.div 
+    <div 
       ref={cardRef}
       id={`polymer-${polymer.id}`}
-      layout
-      whileHover={{ scale: 1.02 }}
-      className={`relative bg-white rounded-3xl shadow-lg shadow-slate-200/40 overflow-hidden transition-shadow duration-300 hover:shadow-2xl hover:shadow-slate-300/60 ${isOpen ? 'col-span-1 md:col-span-2 lg:col-span-3' : ''}`}
+      className={`relative bg-white rounded-3xl shadow-lg shadow-slate-200/40 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-300/60 hover:scale-[1.02] ${isOpen ? 'col-span-1 md:col-span-2 lg:col-span-3' : ''}`}
     >
-      {/* Fundo com Paralaxe */}
-      <motion.div 
-        style={{ y: yParallax }}
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-      >
-        <div className={`w-full h-[130%] -mt-[15%] bg-gradient-to-b ${polymer.color} blur-3xl`} />
-      </motion.div>
+      {/* Fundo decorativo */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+        <div className={`w-full h-full bg-gradient-to-b ${polymer.color} blur-3xl`} />
+      </div>
 
       <div 
         className="relative z-10 w-full h-56 cursor-pointer group flex shadow-none overflow-hidden"
@@ -485,7 +472,7 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }
 
@@ -795,7 +782,7 @@ function RecyclingSection() {
               >
                 <Recycle className="w-10 h-10 text-emerald-600 mb-2 transition-transform group-hover:rotate-12" strokeWidth={1.5} />
                 <span className="text-2xl font-black text-slate-800 leading-none">{item.num}</span>
-                <span className="text-xs font-bold text-slate-500 mt-1">{item.name}</span>
+                <span className="text-xs font-bold text-slate-500 mt-1" translate="no">{item.name}</span>
                 
                 {/* Tooltip */}
                 <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 w-max max-w-[200px] text-center">
