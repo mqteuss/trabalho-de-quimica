@@ -49,7 +49,7 @@ function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2 text-emerald-600">
           <FlaskConical className="w-6 h-6" />
@@ -82,7 +82,7 @@ function Header() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden overflow-hidden bg-white border-b border-slate-200/50"
+            className="md:hidden overflow-hidden bg-white shadow-md"
           >
             <nav className="flex flex-col px-4 py-4 space-y-4 text-sm font-medium text-slate-600">
               <a 
@@ -194,7 +194,7 @@ function Hero() {
                 A reação química que une essas "pérolas" é chamada de <strong>polimerização</strong>.
               </p>
             </div>
-            <div className="w-full md:w-1/3 aspect-square bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-center p-6">
+            <div className="w-full md:w-1/3 aspect-square bg-slate-50 rounded-2xl flex items-center justify-center p-6 shadow-sm">
               {/* Abstract representation of a polymer chain */}
               <div className="flex items-center gap-1">
                 {[1, 2, 3, 4, 5].map((i) => (
@@ -275,7 +275,7 @@ function PresentationModal({ onClose }: { onClose: () => void }) {
               transition={{ duration: 0.3 }}
               className="flex-1 flex flex-col items-center text-center"
             >
-              <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-md border border-white/10 shadow-inner mb-6">
+              <div className="p-4 bg-white/10 rounded-2xl backdrop-blur-md shadow-inner mb-6">
                 {steps[step].icon}
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
@@ -371,35 +371,46 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
       </motion.div>
 
       <div 
-        className="relative z-10 p-6 cursor-pointer flex items-center justify-between group"
+        className="relative z-10 w-full h-56 cursor-pointer group flex shadow-none overflow-hidden"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center gap-4">
+        <img 
+          src={polymer.image} 
+          alt={`Exemplo de ${polymer.name}`}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          referrerPolicy="no-referrer"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/10 transition-opacity duration-300 group-hover:opacity-90" />
+        
+        <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <motion.div 
+              animate={{ 
+                scale: isOpen ? 1.05 : 1,
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${polymer.color} flex items-center justify-center text-white font-extrabold text-2xl shadow-lg ring-2 ring-white/20`}
+            >
+              {polymer.acronym}
+            </motion.div>
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-1 drop-shadow-md group-hover:text-emerald-300 transition-colors">{polymer.name}</h3>
+              <p className="text-sm text-slate-300 font-medium drop-shadow">
+                Símbolo de reciclagem: <span className="font-bold text-white">{polymer.number}</span>
+              </p>
+            </div>
+          </div>
           <motion.div 
             animate={{ 
-              scale: isOpen ? 1.1 : 1,
-            }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${polymer.color} flex items-center justify-center text-white font-bold text-2xl shadow-sm`}
+              rotate: isOpen ? 180 : 0,
+              y: isOpen ? -2 : 0
+            }} 
+            transition={{ type: "spring", stiffness: 400, damping: 12 }}
+            className="text-white bg-white/20 hover:bg-white/30 p-2 rounded-full backdrop-blur-sm transition-colors"
           >
-            {polymer.acronym}
+            <ChevronDown className="w-6 h-6" />
           </motion.div>
-          <div>
-            <h3 className="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">{polymer.name}</h3>
-            <p className="text-sm text-slate-500">Símbolo de reciclagem: {polymer.number}</p>
-          </div>
         </div>
-        <motion.div 
-          animate={{ 
-            rotate: isOpen ? 180 : 0,
-            scale: isOpen ? 1.2 : 1,
-            y: isOpen ? -4 : 0
-          }} 
-          transition={{ type: "spring", stiffness: 400, damping: 12 }}
-          className="text-slate-400 group-hover:text-emerald-500"
-        >
-          <ChevronDown className="w-6 h-6" />
-        </motion.div>
       </div>
 
       <AnimatePresence>
@@ -408,17 +419,22 @@ function PolymerCard({ polymer }: { polymer: typeof polymers[0] }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden relative z-10"
+            className="overflow-hidden relative z-10 bg-white"
           >
-            <div className="p-6 pt-0 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            <div className="p-6">
+              <div className="flex items-center gap-2 text-slate-700 font-medium mb-6">
+                <Package className="w-5 h-5 text-emerald-600" />
+                Informações e Aplicações
+              </div>
               
-              <InfoBlock icon={<Droplets />} title="Matéria-prima" content={polymer.rawMaterial} />
-              <InfoBlock icon={<Factory />} title="Processo de Produção" content={polymer.process} />
-              <InfoBlock icon={<Package />} title="Aplicações no Dia a Dia" content={polymer.applications} />
-              <InfoBlock icon={<Info />} title="Exemplos de Produtos" content={polymer.products} />
-              <InfoBlock icon={<AlertTriangle className="text-amber-500" />} title="Danos à Saúde e Ambiente" content={polymer.damages} />
-              <InfoBlock icon={<Lightbulb className="text-yellow-500" />} title="Curiosidade" content={polymer.curiosity} className="bg-yellow-50/60" />
-              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <InfoBlock icon={<Droplets />} title="Matéria-prima" content={polymer.rawMaterial} />
+                <InfoBlock icon={<Factory />} title="Processo de Produção" content={polymer.process} />
+                <InfoBlock icon={<Package />} title="Aplicações no Dia a Dia" content={polymer.applications} />
+                <InfoBlock icon={<Info />} title="Exemplos de Produtos" content={polymer.products} />
+                <InfoBlock icon={<AlertTriangle className="text-amber-500" />} title="Danos à Saúde e Ambiente" content={polymer.damages} />
+                <InfoBlock icon={<Lightbulb className="text-yellow-500" />} title="Curiosidade" content={polymer.curiosity} className="bg-yellow-50/60" />
+              </div>
             </div>
           </motion.div>
         )}
@@ -440,6 +456,18 @@ function InfoBlock({ icon, title, content, className = "bg-slate-50" }: { icon: 
 }
 
 function ImpactSection() {
+  const particles = React.useMemo(() => {
+    return Array.from({ length: 15 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      y: [0, Math.random() * -40 - 20],
+      x: [0, (Math.random() - 0.5) * 40],
+      scale: [0, Math.random() * 1.5 + 0.5, 0],
+      duration: Math.random() * 2 + 2,
+      delay: Math.random() * 2,
+    }));
+  }, []);
+
   return (
     <section id="impacto" className="py-24 bg-slate-900 text-white relative overflow-hidden">
       {/* Background Image with better integration */}
@@ -469,7 +497,7 @@ function ImpactSection() {
           {/* Card 1: Tempo de Decomposição */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/10 relative overflow-hidden group"
+            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 relative overflow-hidden group shadow-xl shadow-black/10"
           >
             <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-colors" />
             
@@ -510,7 +538,7 @@ function ImpactSection() {
           {/* Card 2: Oceanos */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/10 relative overflow-hidden group"
+            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 relative overflow-hidden group shadow-xl shadow-black/10"
           >
             <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-colors" />
             
@@ -544,7 +572,7 @@ function ImpactSection() {
           {/* Card 3: Microplásticos */}
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 border border-white/10 relative overflow-hidden group"
+            className="bg-white/5 backdrop-blur-md rounded-3xl p-8 relative overflow-hidden group shadow-xl shadow-black/10"
           >
             <div className="absolute top-0 right-0 -mt-4 -mr-4 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-colors" />
             
@@ -566,24 +594,24 @@ function ImpactSection() {
             
             {/* Visual Aid: Floating particles */}
             <div className="absolute inset-0 pointer-events-none opacity-40 overflow-hidden">
-              {[...Array(15)].map((_, i) => (
+              {particles.map((particle, i) => (
                 <motion.div
                   key={i}
                   className="absolute w-1.5 h-1.5 bg-emerald-400 rounded-full"
                   style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
+                    left: particle.left,
+                    top: particle.top,
                   }}
                   animate={{
-                    y: [0, Math.random() * -40 - 20],
-                    x: [0, (Math.random() - 0.5) * 40],
+                    y: particle.y,
+                    x: particle.x,
                     opacity: [0, 1, 0],
-                    scale: [0, Math.random() * 1.5 + 0.5, 0]
+                    scale: particle.scale
                   }}
                   transition={{
-                    duration: Math.random() * 2 + 2,
+                    duration: particle.duration,
                     repeat: Infinity,
-                    delay: Math.random() * 2,
+                    delay: particle.delay,
                     ease: "easeInOut"
                   }}
                 />
@@ -593,7 +621,7 @@ function ImpactSection() {
         </div>
 
         {/* A Solução */}
-        <div className="bg-gradient-to-r from-emerald-900/40 to-teal-900/40 backdrop-blur-lg rounded-3xl p-8 md:p-10 border border-emerald-500/20 shadow-2xl shadow-emerald-900/20">
+        <div className="bg-gradient-to-r from-emerald-900/40 to-teal-900/40 backdrop-blur-lg rounded-3xl p-8 md:p-10 shadow-2xl shadow-emerald-900/20">
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="flex-1">
               <h3 className="text-2xl font-bold text-emerald-400 mb-6 flex items-center gap-3">
@@ -680,18 +708,26 @@ function RecyclingSection() {
           
           <div className="w-full md:w-1/2 grid grid-cols-3 gap-4">
             {[
-              { num: 1, name: 'PET' },
-              { num: 2, name: 'PEAD' },
-              { num: 3, name: 'PVC' },
-              { num: 4, name: 'PEBD' },
-              { num: 5, name: 'PP' },
-              { num: 6, name: 'PS' },
-              { num: 7, name: 'OUTROS' },
+              { num: 1, name: 'PET', fullName: 'Polietileno Tereftalato' },
+              { num: 2, name: 'PEAD', fullName: 'Polietileno de Alta Densidade' },
+              { num: 3, name: 'PVC', fullName: 'Policloreto de Vinila' },
+              { num: 4, name: 'PEBD', fullName: 'Polietileno de Baixa Densidade' },
+              { num: 5, name: 'PP', fullName: 'Polipropileno' },
+              { num: 6, name: 'PS', fullName: 'Poliestireno' },
+              { num: 7, name: 'OUTROS', fullName: 'Outros (PU, ABS, PC, etc.)' },
             ].map((item) => (
-              <div key={item.num} className="bg-white aspect-square rounded-2xl shadow-md shadow-emerald-100/50 flex flex-col items-center justify-center p-4 hover:shadow-lg hover:shadow-emerald-200/50 transition-shadow">
+              <div key={item.num} className="group relative bg-white aspect-square rounded-2xl shadow-md shadow-emerald-100/50 flex flex-col items-center justify-center p-4 hover:shadow-lg hover:shadow-emerald-200/50 transition-shadow">
                 <Recycle className="w-10 h-10 text-emerald-600 mb-2" strokeWidth={1.5} />
                 <span className="text-2xl font-black text-slate-800 leading-none">{item.num}</span>
                 <span className="text-xs font-bold text-slate-500 mt-1">{item.name}</span>
+                
+                {/* Tooltip */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10 w-max max-w-[200px] text-center">
+                  <div className="bg-slate-800 text-white text-xs py-1.5 px-3 rounded-lg shadow-xl">
+                    {item.fullName}
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-slate-800 rotate-45" />
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -703,7 +739,7 @@ function RecyclingSection() {
 
 function Footer() {
   return (
-    <footer className="bg-white border-t border-slate-200 py-12">
+    <footer className="bg-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-2 text-emerald-600 mb-4">
           <FlaskConical className="w-6 h-6" />

@@ -10,7 +10,8 @@ export const polymers = [
     products: 'Sacolas, embalagens flexíveis, lonas agrícolas.',
     curiosity: 'É um dos plásticos mais produzidos no mundo devido ao seu baixo custo e grande flexibilidade.',
     color: 'from-blue-400 to-blue-600',
-    number: 4
+    number: 4,
+    image: '/polymers/pebd.png'
   },
   {
     id: 'pead',
@@ -23,7 +24,8 @@ export const polymers = [
     products: 'Embalagens de shampoo, potes de sorvete, engradados, bombonas.',
     curiosity: 'É mais rígido e resistente que o PEBD porque suas cadeias poliméricas se "empacotam" melhor, aumentando a densidade.',
     color: 'from-cyan-400 to-cyan-600',
-    number: 2
+    number: 2,
+    image: '/polymers/pead.png'
   },
   {
     id: 'pvc',
@@ -36,7 +38,8 @@ export const polymers = [
     products: 'Canos de água, cartões de crédito, discos de vinil, mangueiras.',
     curiosity: 'É o único plástico em larga escala que não é 100% derivado do petróleo (contém cerca de 57% de cloro extraído do sal marinho).',
     color: 'from-teal-400 to-teal-600',
-    number: 3
+    number: 3,
+    image: '/polymers/pvc.png'
   },
   {
     id: 'pet',
@@ -49,7 +52,8 @@ export const polymers = [
     products: 'Garrafas, roupas de ginástica, vassouras ecológicas, embalagens de bolo.',
     curiosity: 'É um dos plásticos mais reciclados no Brasil e no mundo, podendo ser transformado em tecido para roupas.',
     color: 'from-emerald-400 to-emerald-600',
-    number: 1
+    number: 1,
+    image: '/polymers/pet.png'
   },
   {
     id: 'pp',
@@ -62,7 +66,8 @@ export const polymers = [
     products: 'Tupperware, utilidades domésticas, autopeças, carpetes.',
     curiosity: 'Pode ser dobrado milhões de vezes sem quebrar, por isso é muito usado em dobradiças de potes (tampas "flip-top").',
     color: 'from-green-400 to-green-600',
-    number: 5
+    number: 5,
+    image: '/polymers/pp.png'
   },
   {
     id: 'ps',
@@ -75,7 +80,8 @@ export const polymers = [
     products: 'Bandejas de carne, copos de café, embalagens protetoras para eletrônicos.',
     curiosity: '"Isopor" é na verdade uma marca registrada; o nome correto do material é Poliestireno Expandido (EPS), que é composto por 98% de ar!',
     color: 'from-indigo-400 to-indigo-600',
-    number: 6
+    number: 6,
+    image: '/polymers/ps.png'
   },
   {
     id: 'pu',
@@ -88,6 +94,7 @@ export const polymers = [
     products: 'Colchões, pranchas de surfe, assentos de carros, selantes.',
     curiosity: 'Foi amplamente utilizado na Segunda Guerra Mundial como um substituto resistente e leve para a borracha.',
     color: 'from-violet-400 to-violet-600',
-    number: 7
+    number: 7,
+    image: 'https://images.unsplash.com/photo-1586282391129-76a6df230234?auto=format&fit=crop&w=800&q=80'
   }
 ];
