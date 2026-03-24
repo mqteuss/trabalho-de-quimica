@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <linearGradient id="flask-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+  </defs>
+  <!-- Background glow circle for better visibility as favicon -->
+  <circle cx="12" cy="12" r="11" fill="url(#flask-grad)" opacity="0.1" />
+  <!-- Flask filled area with liquid -->
+  <path d="M4.72 20.55h14.56l-5.069-10.127a2 2 0 0 1-.211-.896V9.527V2h-4v7.527a2 2 0 0 1-.211.896L4.72 20.55z" fill="url(#flask-grad)" opacity="0.3"/>
+  <!-- Flask outline -->
+  <path d="M10 2v7.527a2 2 0 0 1-.211.896L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.069-10.127A2 2 0 0 1 14 9.527V2" stroke="#047857" stroke-width="2"/>
+  <path d="M8.5 2h7" stroke="#047857" stroke-width="2"/>
+  <!-- Liquid highlight -->
+  <path d="M7 16h10" stroke="#059669" stroke-width="1.5" stroke-dasharray="2 2"/>
+</svg>

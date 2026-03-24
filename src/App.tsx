@@ -59,7 +59,7 @@ function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2 text-emerald-600">
           <FlaskConical className="w-6 h-6" />
-          <span className="font-bold text-xl tracking-tight">QuímicaEduc</span>
+          <span className="font-bold text-xl tracking-tight">PoliMundo</span>
         </div>
         
         {/* Desktop Navigation */}
@@ -958,7 +958,7 @@ function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-2 text-emerald-600 mb-4">
           <FlaskConical className="w-6 h-6" />
-          <span className="font-bold text-xl tracking-tight">QuímicaEduc</span>
+          <span className="font-bold text-xl tracking-tight">PoliMundo</span>
         </div>
         <p className="text-slate-500 text-sm">
           Material educativo desenvolvido para trabalho escolar de Química sobre Polímeros.
